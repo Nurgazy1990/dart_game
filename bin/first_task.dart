@@ -47,16 +47,24 @@ void main() {
   int minNumber = int.parse(stdin.readLineSync()!);
   print('Задай конечное число');
   int maxNumber = int.parse(stdin.readLineSync()!);
+  print('Сколько попыток даешь компт=ьютеру?');
+  int tryCount = int.parse(stdin.readLineSync()!);
   var number = createNumber(minNumber, maxNumber);
   if (number.runtimeType == int) {
-    return game(number, minNumber, maxNumber);
+    return game(number, minNumber, maxNumber, tryCount);
   } else {
+    print(number.runtimeType);
     print('Выход из программы ....');
     return;
   }
 }
 
 createNumber(int minNumber, int maxNumber) {
+  /*Функция для получения загаданного числа.
+  Она принимает в себя диапазон из минимального и максимального чисел
+  Если пользователь вводит число не из этого диапазона или число типа !int
+  то возвращается null и программа прерывается
+  */
   int numberCheck = 0;
   int number = 0;
   print(
@@ -69,7 +77,7 @@ createNumber(int minNumber, int maxNumber) {
       while (!(number <= maxNumber && number >= minNumber)) {
         numberCheck++;
         print(
-            'У вас осталось ${(numberCheck - 7).abs()} попыток, попробуйте снова');
+            'Загадай число из диапазона ($minNumber - $maxNumber). У вас осталось ${(numberCheck - 7).abs()} попыток, попробуйте снова');
         number = int.tryParse(stdin.readLineSync() ?? '') ?? 0;
         if (number <= maxNumber && number >= minNumber) {
           return number;
@@ -82,41 +90,48 @@ createNumber(int minNumber, int maxNumber) {
   } while (true);
 }
 
-void game(int number, int minNumber, int maxNumber) {
+void game(int number, int minNumber, int maxNumber, int tryCount) {
   int counter = 0;
   int firstNumber = minNumber;
   int secondNumber = maxNumber;
   int randomNumber = (((secondNumber - firstNumber) / 2) + firstNumber) ~/ 1;
-  int tryCount = 20;
   String userSays = '';
-  if (randomNumber > number) {
-    userSays = 'less';
-  } else if (randomNumber < number) {
-    userSays = 'greater';
-  } else if (randomNumber == number) {
-    userSays = 'yes';
-  }
   while (counter <= tryCount) {
     String thisNumber = 'Компьютер: Это число $randomNumber?';
-    if (number == randomNumber && userSays == 'yes') {
+    if (randomNumber == number) {
       counter++;
       print(thisNumber);
       userSays = stdin.readLineSync()!; //yes
-      randomNumber = number;
-      print('компьютер отгадал ваше загаданное число за $counter попыток');
-      return;
-    } else if (randomNumber > number && userSays == 'less') {
+      if (userSays == 'yes') {
+        randomNumber = number;
+        print('компьютер отгадал ваше загаданное число за $counter попыток');
+        return;
+      } else {
+        print('Вы забыли ваше загаданное число');
+        return;
+      }
+    } else if (randomNumber > number) {
       print(thisNumber);
       userSays = stdin.readLineSync()!; //less
-      secondNumber = randomNumber;
-      randomNumber = (((secondNumber - firstNumber) / 2) + firstNumber) ~/ 1;
-      counter++;
-    } else if (randomNumber < number && userSays == 'greater') {
+      if (userSays == 'less') {
+        secondNumber = randomNumber;
+        randomNumber = (((secondNumber - firstNumber) / 2) + firstNumber) ~/ 1;
+        counter++;
+      } else {
+        print('Вы забыли ваше загаданное число');
+        return;
+      }
+    } else if (randomNumber < number) {
       print(thisNumber);
       userSays = stdin.readLineSync()!; //greater
-      firstNumber = randomNumber;
-      randomNumber = (((secondNumber - firstNumber) / 2) + firstNumber) ~/ 1;
-      counter++;
+      if (userSays == 'greater') {
+        firstNumber = randomNumber;
+        randomNumber = (((secondNumber - firstNumber) / 2) + firstNumber) ~/ 1;
+        counter++;
+      } else {
+        print('Вы забыли ваше загаданное число');
+        return;
+      }
     }
   }
   print('Компьютер не смог отгадать за $tryCount попыток');
