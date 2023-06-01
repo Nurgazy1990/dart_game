@@ -30,8 +30,6 @@ void twoGames(int minNumber, int maxNumber) {
   int botGuessNumber = 0;
   int userGuessNumber = 0;
   int botNumber = Random().nextInt(maxNumber) + minNumber;
-  int userGuessCounter;
-  int botGuessCounter;
   print(
       'Загадай число от $minNumber до $maxNumber, бот попробует его отгадать');
   var userNumber = createNumber(minNumber, maxNumber);
@@ -131,69 +129,49 @@ createNumber(int minNumber, int maxNumber) {
   } while (true);
 }
 
-void botGame(int number, int minNumber, int maxNumber, int tryCount) {
-  int counter = 0;
-  int firstNumber = minNumber;
-  int secondNumber = maxNumber;
-  int randomNumber = (((secondNumber - firstNumber) / 2) + firstNumber) ~/ 1;
-  String userSays = '';
-  while (counter <= tryCount) {
-    String thisNumber = 'Компьютер: Это число $randomNumber?';
-    if (randomNumber == number) {
-      counter++;
-      print(thisNumber);
-      userSays = stdin.readLineSync()!; //yes
-      if (userSays == 'yes') {
-        randomNumber = number;
-        print('компьютер отгадал ваше загаданное число за $counter попыток');
-        return;
-      } else {
-        print('Вы забыли ваше загаданное число');
-        return;
-      }
-    } else if (randomNumber > number) {
-      print(thisNumber);
-      userSays = stdin.readLineSync()!; //less
-      if (userSays == 'less') {
-        secondNumber = randomNumber;
-        randomNumber = (((secondNumber - firstNumber) / 2) + firstNumber) ~/ 1;
-        counter++;
-      } else {
-        print('Вы забыли ваше загаданное число');
-        return;
-      }
-    } else if (randomNumber < number) {
-      print(thisNumber);
-      userSays = stdin.readLineSync()!; //greater
-      if (userSays == 'greater') {
-        firstNumber = randomNumber;
-        randomNumber = (((secondNumber - firstNumber) / 2) + firstNumber) ~/ 1;
-        counter++;
-      } else {
-        print('Вы забыли ваше загаданное число');
-        return;
-      }
-    }
-  }
-  print('Компьютер не смог отгадать за $tryCount попыток');
-}
-
-// void userGuessNumber(
-//   counter,
-//   number,
-// ) {
-//   while (true) {
-//     counter++;
+// void botGame(int number, int minNumber, int maxNumber, int tryCount) {
+//   int counter = 0;
+//   int firstNumber = minNumber;
+//   int secondNumber = maxNumber;
+//   int randomNumber = (((secondNumber - firstNumber) / 2) + firstNumber) ~/ 1;
+//   String userSays = '';
+//   while (counter <= tryCount) {
+//     String thisNumber = 'Компьютер: Это число $randomNumber?';
 //     if (randomNumber == number) {
-//       print('Вы угадали');
-//       break;
-//     } else if (counter >= 7) {
-//       print('Вы проиграли');
-//       break;
+//       counter++;
+//       print(thisNumber);
+//       userSays = stdin.readLineSync()!; //yes
+//       if (userSays == 'yes') {
+//         randomNumber = number;
+//         print('компьютер отгадал ваше загаданное число за $counter попыток');
+//         return;
+//       } else {
+//         print('Вы забыли ваше загаданное число');
+//         return;
+//       }
 //     } else if (randomNumber > number) {
-//       print('Число больше');
+//       print(thisNumber);
+//       userSays = stdin.readLineSync()!; //less
+//       if (userSays == 'less') {
+//         secondNumber = randomNumber;
+//         randomNumber = (((secondNumber - firstNumber) / 2) + firstNumber) ~/ 1;
+//         counter++;
+//       } else {
+//         print('Вы забыли ваше загаданное число');
+//         return;
+//       }
 //     } else if (randomNumber < number) {
-//       print('Число меньше');
+//       print(thisNumber);
+//       userSays = stdin.readLineSync()!; //greater
+//       if (userSays == 'greater') {
+//         firstNumber = randomNumber;
+//         randomNumber = (((secondNumber - firstNumber) / 2) + firstNumber) ~/ 1;
+//         counter++;
+//       } else {
+//         print('Вы забыли ваше загаданное число');
+//         return;
+//       }
 //     }
 //   }
+//   print('Компьютер не смог отгадать за $tryCount попыток');
 // }
